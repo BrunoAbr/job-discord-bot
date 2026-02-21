@@ -1,14 +1,13 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
-import puppeteer from "puppeteer";
+import {scrapingService} from "./scraper/freelasScreper.js"
 import dotenv from "dotenv";
 dotenv.config();
 
-const FREELANCE_URL = "https://www.99freelas.com.br/projects?categoria=web-mobile-e-software";
 async function sendMensage() {
     
     try {
-        await axios.post(DISCORD_WEBHOOK, {
+        await axios.post(process.env.DISCORD_WEBHOOK, {
             content: "Teste de vaga sendo enviada",
             embeds: [{
                 "color": "80",
@@ -37,34 +36,5 @@ async function sendMensage() {
     }
 }
 
-async function scraping() {
-    const $browser = await puppeteer.launch();
-    const $page = await $browser.newPage();
-    
-    await $page.goto(FREELANCE_URL, {
-        waitUntil: "networkidle2"
-    });
 
-    const projects = await $page.evaluate(() => {
-        const $items = document.querySelectorAll("li.result-item");
-
-        return Array.from($items).map($item => {
-            const linkElement = $item.querySelector("h1 a");
-            
-            return {
-                title: linkElement?.innerText.trim(),
-                link: linkElement?.href
-            };
-        });
-    });
-
-    const $content = await $page.content();
-
-    console.log(projects);
-
-    await $browser.close()
-    
-
-}
-
-scraping()
+scrapingService.scraping()
