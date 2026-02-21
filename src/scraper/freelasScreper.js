@@ -1,13 +1,11 @@
 import puppeteer from "puppeteer";
-import dotenv from "dotenv";
-dotenv.config();
 
-export const scrapingService = {
-    scraping: async () => {
+export const freelasScreper = {
+    scrapingNineNine: async () => {
         const $browser = await puppeteer.launch();
         const $page = await $browser.newPage();
         
-        await $page.goto(process.env.FREELANCE_URL, {
+        await $page.goto(process.env.NINENINEFREELANCE_URL, {
             waitUntil: "networkidle2"
         });
 
@@ -19,7 +17,7 @@ export const scrapingService = {
                 
                 return {
                     title: $linkElement?.innerText.trim(),
-                    link: $linkElement?.href
+                    url: $linkElement?.href,
                 };
             });
         });
@@ -29,6 +27,6 @@ export const scrapingService = {
         console.log(projects);
 
         await $browser.close()    
-
+        return projects
     }
 }
