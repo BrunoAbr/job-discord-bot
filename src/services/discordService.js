@@ -2,9 +2,7 @@ import axios from "axios";
 import { utils } from "../utils/utils.js";
 
 export const discordService = {
-
-    sendMensage: async ({title, url, description=null, value="A combinar"}) => {
-        
+    sendMensage: async ({title, url, description=null, value="A combinar"}, origin) => {
         try {
             await axios.post(process.env.DISCORD_WEBHOOK, {
                 content: "🚀 Nova vaga encontrada!",
@@ -14,7 +12,7 @@ export const discordService = {
                     "description": description,
                     "url": url,
                     "thumbnail": {
-                        "url": process.env.NINENINEFREELANCE_IMG,
+                        "url": origin === "ninenine" ? process.env.NINENINEFREELANCE_IMG : process.env.WORKANA_IMG,
                         },
                     "fields": [{
                         "name": "Valor",
