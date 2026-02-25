@@ -1,9 +1,13 @@
 import puppeteer from "puppeteer";
+import { discordService } from "../services/discordService.js"
 
 export const freelasScraper = {
     scrapingNineNine: async () => {
-        const originScraping = "ninenine"
-        const $browser = await puppeteer.launch();
+        const $browser = await puppeteer.launch({
+    headless: "new",
+    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
+    args: ["--no-sandbox", "--disable-setuid-sandbox"]
+});
         const $page = await $browser.newPage();
         
         await $page.goto(process.env.NINENINEFREELANCE_URL, {
@@ -31,8 +35,11 @@ export const freelasScraper = {
         return projects;
     },
     scrapingWorkana: async () => {
-        const originScraping = "workana"
-        const $browser = await puppeteer.launch();
+        const $browser = await puppeteer.launch({
+    headless: "new",
+    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
+    args: ["--no-sandbox", "--disable-setuid-sandbox"]
+});
         const $page = await $browser.newPage();
         
         await $page.goto(process.env.WORKANA_URL, {
@@ -61,4 +68,25 @@ export const freelasScraper = {
         await $browser.close()    
         return projects;
     }
+}
+
+async function nineMain() { 
+    const jobs = await freelasScraper.scrapingNineNine()
+
+    for (const job of jobs) {
+        await discordService.sendMensage(job, "ninenine");
+    }
+}
+
+async function workanaMain() { 
+    const jobs = await freelasScraper.scrapingWorkana();
+
+    for (const job of jobs) {
+        await discordService.sendMensage(job, "workana");
+    }
+}
+
+export async function mainScraper () {
+    await workanaMain();
+    await nineMain();
 }
