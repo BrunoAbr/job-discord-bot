@@ -38,15 +38,25 @@ Projeto finalizado ✅ e pronto para execução contínua com Docker.
 
 src/
  ├── models/
+ 
  │    └── jobModel.js
+ 
  ├── scraper/
+ 
  │    └── freelasScraper.js
+ 
  ├── services/
+ 
  │    └── discordService.js
+ 
  ├── utils/
+ 
  │    └── utils.js
+ 
  ├── app.js
+ 
  └── cron.js
+ 
 
  ---
 ### 📌 Responsabilidades
