@@ -100,7 +100,7 @@ WORKANA_IMG=url_da_imagem
 ### ▶️ Rodando Localmente
 
 ```bash
-node src/index.js
+node src/app.js
 ```
 O bot iniciará e executará automaticamente conforme o agendamento definido no cron, todos os dias **12h**.
 
